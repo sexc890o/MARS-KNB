@@ -5,7 +5,8 @@
   <style>
     body { 
       margin: 0; 
-      background: white; 
+      background: #fff; 
+      font-family: Arial, sans-serif; 
       height: 100vh; 
       display: flex; 
       align-items: center; 
@@ -24,6 +25,7 @@
       height: 100%; 
       border-radius: 50%; 
       object-fit: cover; 
+      box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
     }
     .circle { 
       position: absolute; 
@@ -32,11 +34,10 @@
       width: 310px; 
       height: 310px; 
       border-radius: 50%; 
-      border: 15px solid #eee; 
-      border-top: 15px solid #ff6b00; 
-      animation: spin 3s linear forwards; 
+      background: conic-gradient(#ff6b00 0deg 0deg, transparent 0deg 360deg); 
+      animation: fill 3s linear forwards; 
     }
-    .loading { 
+    .loading-text { 
       margin-top: 35px; 
       font-style: italic; 
       color: #666; 
@@ -48,16 +49,18 @@
       color: #00c853; 
       margin-top: 20px; 
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fill { 
+      to { background: conic-gradient(#ff6b00 0deg 360deg, transparent 360deg); } 
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="image-container">
       <img src="bum.png" id="photo">
-      <div class="circle"></div>
+      <div class="circle" id="circle"></div>
     </div>
-    <div class="loading" id="text">Carregando...</div>
+    <div class="loading-text" id="text">Carregando...</div>
     <div class="check" id="check">✅</div>
   </div>
 
