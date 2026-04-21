@@ -3,24 +3,74 @@
 <head>
   <title>MARS KNB</title>
   <style>
-    body { margin:0; background:white; height:100vh; display:flex; align-items:center; justify-content:center; }
-    .box { text-align:center; }
-    .image-container { position:relative; width:280px; height:280px; margin:0 auto; }
-    img { width:100%; height:100%; border-radius:50%; object-fit:cover; }
-    .circle { position:absolute; top:-15px; left:-15px; width:310px; height:310px; border:15px solid #eee; border-top:15px solid #ff6b00; border-radius:50%; animation:spin 3s linear forwards; }
-    .loading { margin-top:35px; font-style:italic; color:#666; font-size:19px; }
-    .check { display:none; font-size:110px; color:#00c853; margin-top:20px; }
-    @keyframes spin { to { transform:rotate(360deg); } }
+    body { 
+      margin: 0; 
+      background: white; 
+      height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      overflow: hidden;
+    }
+    .container { text-align: center; }
+    .image-container { 
+      position: relative; 
+      width: 280px; 
+      height: 280px; 
+      margin: 0 auto; 
+    }
+    img { 
+      width: 100%; 
+      height: 100%; 
+      border-radius: 50%; 
+      object-fit: cover; 
+    }
+    .circle { 
+      position: absolute; 
+      top: -15px; 
+      left: -15px; 
+      width: 310px; 
+      height: 310px; 
+      border-radius: 50%; 
+      border: 15px solid #eee; 
+      border-top: 15px solid #ff6b00; 
+      animation: spin 3s linear forwards; 
+    }
+    .loading { 
+      margin-top: 35px; 
+      font-style: italic; 
+      color: #666; 
+      font-size: 19px; 
+    }
+    .check { 
+      display: none; 
+      font-size: 110px; 
+      color: #00c853; 
+      margin-top: 20px; 
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
-  <div class="box">
+  <div class="container">
     <div class="image-container">
-      <img src="bum.png">
+      <img src="bum.png" id="photo">
       <div class="circle"></div>
     </div>
-    <div class="loading">Carregando...</div>
-    <div class="check">✅</div>
+    <div class="loading" id="text">Carregando...</div>
+    <div class="check" id="check">✅</div>
   </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById('photo').style.opacity = '0';
+      document.getElementById('text').style.opacity = '0';
+      setTimeout(() => {
+        document.getElementById('photo').style.display = 'none';
+        document.getElementById('text').style.display = 'none';
+        document.getElementById('check').style.display = 'block';
+      }, 800);
+    }, 3100);
+  </script>
 </body>
 </html>
