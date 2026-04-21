@@ -1,78 +1,223 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="pt-BR">
 <head>
-  <title>MARS KNB</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loading</title>
   <style>
-    body { 
-      margin: 0; 
-      background: white; 
-      height: 100vh; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      overflow: hidden;
-    }
-    .container { text-align: center; }
-    .image-container { 
-      position: relative; 
-      width: 280px; 
-      height: 280px; 
-      margin: 0 auto;
-    }
-    img { 
-      width: 100%; 
-      height: 100%; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      position: relative; 
-      z-index: 2;
-    }
-    .circle { 
-      position: absolute; 
-      top: -10px; 
-      left: -10px; 
-      width: 300px; 
-      height: 300px; 
-      border: 12px solid #e5e5e5; 
-      border-top: 12px solid #ff6b00; 
-      border-radius: 50%; 
-      animation: spin 3s linear forwards;
-    }
-    .loading-text { 
-      margin-top: 35px; 
-      font-style: italic; 
-      color: #666; 
-      font-size: 19px;
-    }
-    .check { 
-      display: none; 
-      font-size: 100px; 
-      color: #00c853; 
-      margin-top: 20px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+```
+body {
+  margin: 0;
+  background: #fff;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, serif;
+}
+
+.box {
+  text-align: center;
+}
+
+.loader-wrap {
+  position: relative;
+  width: 290px;
+  height: 290px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1),
+              height 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* SVG ring */
+.progress-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  transition: all 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+.track {
+  fill: none;
+  stroke: #f0f0f0;
+  stroke-width: 6;
+  transition: opacity 0.4s ease;
+}
+
+.fill {
+  fill: none;
+  stroke: url(#ringGrad);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 848;
+  stroke-dashoffset: 848;
+  animation: fillRing 3s ease-in-out forwards;
+  transition: stroke 0.4s ease, stroke-width 0.4s ease, stroke-dashoffset 0.4s ease;
+}
+
+@keyframes fillRing {
+  0%   { stroke-dashoffset: 848; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Photo */
+.photo {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.photo.hide {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.88);
+  pointer-events: none;
+}
+
+/* Check (inside large circle) */
+.check-inside {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+}
+
+.check-inside.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.check-mark {
+  fill: none;
+  stroke: #22c55e;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  transition: stroke-dashoffset 0.5s ease 0.1s;
+}
+
+.check-mark.draw {
+  stroke-dashoffset: 0;
+}
+
+/* Label */
+.label {
+  font-style: italic;
+  font-size: 15px;
+  color: #bbb;
+  letter-spacing: 0.5px;
+  margin-top: 20px;
+  transition: opacity 0.5s ease;
+}
+
+.label.hide { opacity: 0; }
+```
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="image-container">
-      <img src="bum.png" id="photo">
-      <div class="circle" id="circle"></div>
-    </div>
-    <div class="loading-text" id="text">Carregando...</div>
-    <div class="check" id="check">✅</div>
+
+  <div class="box">
+  <div class="loader-wrap" id="loaderWrap">
+
+```
+<svg class="progress-svg" id="progressSvg" viewBox="0 0 290 290">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#dc2626"/>
+    </linearGradient>
+    <linearGradient id="ringGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+  <circle class="track" cx="145" cy="145" r="135" id="trackCircle"/>
+  <circle class="fill"  cx="145" cy="145" r="135" id="fillCircle"/>
+</svg>
+
+<img class="photo" id="photo" src="bum.png" alt="foto"
+     onerror="this.src='https://via.placeholder.com/260/e2e2e2/999?text=foto'"/>
+
+<div class="check-inside" id="checkInside">
+  <svg width="90" height="90" viewBox="0 0 90 90">
+    <polyline class="check-mark" id="checkMark" points="18,47 37,66 72,26"/>
+  </svg>
+</div>
+```
+
+  </div>
+
+  <p class="label" id="label">Carregando…</p>
   </div>
 
   <script>
+    const photo       = document.getElementById('photo');
+    const checkInside = document.getElementById('checkInside');
+    const checkMark   = document.getElementById('checkMark');
+    const label       = document.getElementById('label');
+    const loaderWrap  = document.getElementById('loaderWrap');
+    const fillCircle  = document.getElementById('fillCircle');
+    const trackCircle = document.getElementById('trackCircle');
+    const progressSvg = document.getElementById('progressSvg');
+
+    // Step 1 — ring finishes at 3s
     setTimeout(() => {
-      document.getElementById("photo").style.opacity = "0";
-      document.getElementById("text").style.opacity = "0";
+
+      // Fade out photo + label
+      photo.classList.add('hide');
+      label.classList.add('hide');
+
+      // Step 2 — show check inside big circle
       setTimeout(() => {
-        document.getElementById("photo").style.display = "none";
-        document.getElementById("text").style.display = "none";
-        document.getElementById("check").style.display = "block";
-      }, 800);
-    }, 3100);
+        checkInside.classList.add('show');
+        setTimeout(() => checkMark.classList.add('draw'), 150);
+
+        // Step 3 — shrink circle + turn green
+        setTimeout(() => {
+          // Hide track ring (no more gray)
+          trackCircle.style.opacity = '0';
+
+          // Turn fill green
+          fillCircle.setAttribute('stroke', 'url(#ringGreen)');
+          fillCircle.style.strokeWidth = '5';
+
+          // Shrink the whole wrapper
+          loaderWrap.style.width  = '88px';
+          loaderWrap.style.height = '88px';
+
+          // Scale SVG viewBox effect via transform
+          progressSvg.style.transform = 'rotate(-90deg) scale(1)';
+
+        }, 600);
+
+      }, 450);
+
+    }, 3000);
   </script>
+
 </body>
 </html>
