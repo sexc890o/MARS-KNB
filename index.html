@@ -8,7 +8,6 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-```
 body {
   margin: 0;
   background: #fff;
@@ -32,7 +31,7 @@ body {
               height 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 
-/* Photo */
+/* Photo - ALTERADO AQUI */
 .photo {
   width: 100%;
   height: 100%;
@@ -41,6 +40,7 @@ body {
   object-position: center center;
   display: block;
   transition: opacity 0.5s ease, transform 0.5s ease;
+  box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
 }
 
 .photo.hide {
@@ -49,7 +49,7 @@ body {
   pointer-events: none;
 }
 
-/* SVG ring — posicionado em volta da foto como no segundo código */
+/* SVG ring */
 .progress-svg {
   position: absolute;
   top: -15px;
@@ -83,7 +83,7 @@ body {
   100% { stroke-dashoffset: 0; }
 }
 
-/* Check (inside large circle) */
+/* Check */
 .check-inside {
   position: absolute;
   inset: 0;
@@ -128,8 +128,6 @@ body {
 }
 
 .label.hide { opacity: 0; }
-```
-
   </style>
 </head>
 <body>
@@ -137,7 +135,6 @@ body {
   <div class="box">
   <div class="loader-wrap" id="loaderWrap">
 
-```
 <svg class="progress-svg" id="progressSvg" viewBox="0 0 290 290">
   <defs>
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -153,15 +150,13 @@ body {
   <circle class="fill"  cx="145" cy="145" r="135" id="fillCircle"/>
 </svg>
 
-<img class="photo" id="photo" src="bum.png" alt="foto"
-     onerror="this.src='https://via.placeholder.com/260/e2e2e2/999?text=foto'"/>
+<img class="photo" id="photo" src="bum.png" alt="foto"/>
 
 <div class="check-inside" id="checkInside">
   <svg width="90" height="90" viewBox="0 0 90 90">
     <polyline class="check-mark" id="checkMark" points="18,47 37,66 72,26"/>
   </svg>
 </div>
-```
 
   </div>
 
@@ -178,38 +173,23 @@ body {
     const trackCircle = document.getElementById('trackCircle');
     const progressSvg = document.getElementById('progressSvg');
 
-    // Step 1 — ring finishes at 3s
     setTimeout(() => {
-
-      // Fade out photo + label
       photo.classList.add('hide');
       label.classList.add('hide');
 
-      // Step 2 — show check inside big circle
       setTimeout(() => {
         checkInside.classList.add('show');
         setTimeout(() => checkMark.classList.add('draw'), 150);
 
-        // Step 3 — shrink circle + turn green
         setTimeout(() => {
-          // Hide track ring (no more gray)
           trackCircle.style.opacity = '0';
-
-          // Turn fill green
           fillCircle.setAttribute('stroke', 'url(#ringGreen)');
           fillCircle.style.strokeWidth = '5';
 
-          // Shrink the whole wrapper
           loaderWrap.style.width  = '88px';
           loaderWrap.style.height = '88px';
-
-          // Scale SVG viewBox effect via transform
-          progressSvg.style.transform = 'rotate(-90deg) scale(1)';
-
         }, 600);
-
       }, 450);
-
     }, 3000);
   </script>
 
