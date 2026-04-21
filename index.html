@@ -61,6 +61,7 @@
   <script>
     const API_KEY = "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";
 
+    // Troca de tela depois do loading
     setTimeout(() => {
       document.getElementById("splash").style.display = "none";
       document.getElementById("chat").style.display = "flex";
@@ -108,9 +109,8 @@
         thinking.remove();
         addMessage(reply, "ai");
       } catch (e) {
-        thinking.textContent = "Erro de conexão com a API";
+        thinking.textContent = "Erro de conexão. Verifique sua chave API.";
+        console.error(e);
       }
     }
   </script>
-</body>
-</html>
