@@ -1,47 +1,42 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
 <head>
   <title>MARS KNB</title>
   <style>
-    body { margin: 0; background: #000; font-family: Arial, sans-serif; overflow: hidden; }
+    body { margin: 0; background: #000; overflow: hidden; font-family: Arial; }
     .container { position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .image-container { position: relative; width: 280px; height: 280px; }
-    img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; transition: all 0.6s ease; }
-    .circle { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#ff6b00 0% 0%, transparent 0%); transition: all 4s linear; }
-    .loading-text { color: #666; font-style: italic; margin-top: 30px; font-size: 18px; opacity: 0.6; }
-    .check { display: none; font-size: 90px; color: #00ff9d; }
+    .image-container { position: relative; width: 260px; height: 260px; }
+    img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; box-shadow: 0 0 30px rgba(255, 107, 0, 0.4); }
+    .circle { 
+      position: absolute; top: -12px; left: -12px; width: 284px; height: 284px; 
+      border-radius: 50%; border: 12px solid #333; border-top: 12px solid #ff6b00; 
+      animation: spin 2.5s linear forwards;
+    }
+    .loading-text { color: #888; font-style: italic; margin-top: 40px; font-size: 19px; letter-spacing: 2px; }
+    .check { display: none; font-size: 100px; color: #00ff9d; margin-top: 20px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="image-container">
       <img id="photo" src="bum.png">
-      <div class="circle" id="progress"></div>
+      <div class="circle" id="circle"></div>
     </div>
     <div class="loading-text" id="text">Carregando...</div>
     <div class="check" id="check">✅</div>
   </div>
 
   <script>
-    const progress = document.getElementById('progress');
-    const text = document.getElementById('text');
-    const photo = document.getElementById('photo');
-    const check = document.getElementById('check');
-
     setTimeout(() => {
-      progress.style.background = 'conic-gradient(#ff6b00 0% 100%, transparent 100%)';
-    }, 100);
-
-    setTimeout(() => {
-      photo.style.opacity = '0';
-      text.style.opacity = '0';
-      
+      document.getElementById('photo').style.opacity = '0';
+      document.getElementById('text').style.opacity = '0';
       setTimeout(() => {
-        photo.style.display = 'none';
-        check.style.display = 'block';
-        text.style.display = 'none';
-      }, 600);
-    }, 4200);
+        document.getElementById('photo').style.display = 'none';
+        document.getElementById('text').style.display = 'none';
+        document.getElementById('check').style.display = 'block';
+      }, 700);
+    }, 2800);
   </script>
 </body>
 </html>
