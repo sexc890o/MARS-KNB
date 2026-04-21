@@ -58,61 +58,61 @@
     </div>
   </div>
 
-    <script>
-  const API_KEY = "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";
+  <script>
+    const API_KEY = "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";
 
-  // Troca de tela depois do loading
-  setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-    document.getElementById("chat").style.display = "flex";
-  }, 3300);
+    // Troca de tela depois do loading
+    setTimeout(() => {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("chat").style.display = "flex";
+    }, 3300);
 
-  function addMessage(text, type) {
-    const div = document.createElement("div");
-    div.className = `msg ${type}`;
-    div.textContent = text;
-    document.getElementById("messages").appendChild(div);
-    div.scrollIntoView({behavior: "smooth"});
-  }
-
-  async function sendMessage() {
-    const input = document.getElementById("userInput");
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage(text, "user");
-    input.value = "";
-
-    const thinking = document.createElement("div");
-    thinking.className = "msg ai";
-    thinking.textContent = "Pensando...";
-    document.getElementById("messages").appendChild(thinking);
-
-    try {
-      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "llama3-8b-8192",
-          messages: ,
-          temperature: 0.7,
-          max_tokens: 800
-        })
-      });
-
-      const data = await res.json();
-      const reply = data.choices[0].message.content;
-
-      thinking.remove();
-      addMessage(reply, "ai");
-    } catch (e) {
-      thinking.textContent = "Erro ao conectar. Verifique sua chave.";
-      console.error(e);
+    function addMessage(text, type) {
+      const div = document.createElement("div");
+      div.className = `msg ${type}`;
+      div.textContent = text;
+      document.getElementById("messages").appendChild(div);
+      div.scrollIntoView({behavior: "smooth"});
     }
-  }
-</script>
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+
+      const thinking = document.createElement("div");
+      thinking.className = "msg ai";
+      thinking.textContent = "Pensando...";
+      document.getElementById("messages").appendChild(thinking);
+
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "llama3-8b-8192",
+            messages: ,
+            temperature: 0.7,
+            max_tokens: 800
+          })
+        });
+
+        const data = await res.json();
+        const reply = data.choices[0].message.content;
+
+        thinking.remove();
+        addMessage(reply, "ai");
+      } catch (e) {
+        thinking.textContent = "Erro ao conectar. Verifique sua chave.";
+        console.error(e);
+      }
+    }
+  </script>
 </body>
 </html>
