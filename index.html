@@ -5,8 +5,7 @@
   <style>
     body { 
       margin: 0; 
-      background: #fff; 
-      font-family: Arial, sans-serif; 
+      background: white; 
       height: 100vh; 
       display: flex; 
       align-items: center; 
@@ -18,40 +17,40 @@
       position: relative; 
       width: 280px; 
       height: 280px; 
-      margin: 0 auto; 
+      margin: 0 auto;
     }
     img { 
       width: 100%; 
       height: 100%; 
       border-radius: 50%; 
       object-fit: cover; 
-      box-shadow: 0 0 30px rgba(255, 107, 0, 0.4);
+      position: relative; 
+      z-index: 2;
     }
     .circle { 
       position: absolute; 
-      top: -15px; 
-      left: -15px; 
-      width: 310px; 
-      height: 310px; 
+      top: -10px; 
+      left: -10px; 
+      width: 300px; 
+      height: 300px; 
+      border: 12px solid #e5e5e5; 
+      border-top: 12px solid #ff6b00; 
       border-radius: 50%; 
-      background: conic-gradient(#ff6b00 0deg 0deg, transparent 0deg 360deg); 
-      animation: fill 3s linear forwards; 
+      animation: spin 3s linear forwards;
     }
     .loading-text { 
       margin-top: 35px; 
       font-style: italic; 
       color: #666; 
-      font-size: 19px; 
+      font-size: 19px;
     }
     .check { 
       display: none; 
-      font-size: 110px; 
+      font-size: 100px; 
       color: #00c853; 
-      margin-top: 20px; 
+      margin-top: 20px;
     }
-    @keyframes fill { 
-      to { background: conic-gradient(#ff6b00 0deg 360deg, transparent 360deg); } 
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -66,12 +65,12 @@
 
   <script>
     setTimeout(() => {
-      document.getElementById('photo').style.opacity = '0';
-      document.getElementById('text').style.opacity = '0';
+      document.getElementById("photo").style.opacity = "0";
+      document.getElementById("text").style.opacity = "0";
       setTimeout(() => {
-        document.getElementById('photo').style.display = 'none';
-        document.getElementById('text').style.display = 'none';
-        document.getElementById('check').style.display = 'block';
+        document.getElementById("photo").style.display = "none";
+        document.getElementById("text").style.display = "none";
+        document.getElementById("check").style.display = "block";
       }, 800);
     }, 3100);
   </script>
