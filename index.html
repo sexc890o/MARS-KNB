@@ -7,7 +7,6 @@
   <style>
     body { margin:0; background:#fff; height:100vh; overflow:hidden; font-family:Arial, sans-serif; }
     
-    /* TELA DE CARREGAMENTO */
     #splash {
       height: 100vh;
       display: flex;
@@ -24,19 +23,17 @@
     @keyframes fillRing { to { stroke-dashoffset:0; } }
     .label { font-style:italic; color:#888; font-size:18px; }
 
-    /* TELA DO CHAT */
     #chat { display:none; height:100vh; flex-direction:column; }
     .messages { flex:1; padding:20px; overflow-y:auto; background:#f8f8f8; }
     .input-area { padding:15px; background:white; border-top:1px solid #ddd; }
     input { width:100%; padding:15px; border:1px solid #ccc; border-radius:8px; font-size:16px; }
-    .msg { margin:12px 0; padding:12px 16px; border-radius:12px; max-width:80%; line-height:1.5; }
+    .msg { margin:12px 0; padding:12px 16px; border-radius:12px; max-width:80%; }
     .user { background:#007bff; color:white; margin-left:auto; }
     .ai { background:#e5e5e5; }
   </style>
 </head>
 <body>
 
-  <!-- LOADING -->
   <div id="splash">
     <div class="loader-wrap">
       <svg class="progress-svg" viewBox="0 0 290 290">
@@ -54,18 +51,16 @@
     <p class="label">Carregando…</p>
   </div>
 
-  <!-- CHAT -->
   <div id="chat">
     <div class="messages" id="messages"></div>
     <div class="input-area">
-      <input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key === 'Enter') sendMessage()">
+      <input type="text" id="userInput" placeholder="Digite sua mensagem..." onkeypress="if(event.key==='Enter') sendMessage()">
     </div>
   </div>
 
   <script>
     const API_KEY = "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";
 
-    // Troca de tela após o loading
     setTimeout(() => {
       document.getElementById("splash").style.display = "none";
       document.getElementById("chat").style.display = "flex";
@@ -76,7 +71,7 @@
       div.className = `msg ${type}`;
       div.textContent = text;
       document.getElementById("messages").appendChild(div);
-      div.scrollIntoView({ behavior: "smooth" });
+      div.scrollIntoView({behavior: "smooth"});
     }
 
     async function sendMessage() {
@@ -87,14 +82,13 @@
       addMessage(text, "user");
       input.value = "";
 
-      const loadingMsg = document.createElement("div");
-      loadingMsg.className = "msg ai";
-      loadingMsg.textContent = "Pensando...";
-      document.getElementById("messages").appendChild(loadingMsg);
-      loadingMsg.scrollIntoView({ behavior: "smooth" });
+      const thinking = document.createElement("div");
+      thinking.className = "msg ai";
+      thinking.textContent = "Pensando...";
+      document.getElementById("messages").appendChild(thinking);
 
       try {
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${API_KEY}`,
@@ -108,13 +102,13 @@
           })
         });
 
-        const data = await response.json();
+        const data = await res.json();
         const reply = data.choices[0].message.content;
 
-        loadingMsg.remove();
+        thinking.remove();
         addMessage(reply, "ai");
-      } catch (err) {
-        loadingMsg.textContent = "Erro ao conectar com a API";
+      } catch (e) {
+        thinking.textContent = "Erro de conexão com a API";
       }
     }
   </script>
